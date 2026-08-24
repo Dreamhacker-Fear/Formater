@@ -1,13 +1,22 @@
-import { Forms } from "@vendetta/ui/components";
+import { React } from "@vendetta/metro/common";
 import { storage } from "@vendetta/plugin";
+import { Forms } from "@vendetta/ui/components";
 
-const { FormSection, FormInput, FormText } = Forms;
+const { FormSection, FormInput, FormRow, FormText } = Forms;
 
 export default function Settings() {
+    const [value, setValue] = React.useState(
+        storage.formatting ?? ""
+    );
+
+    const apply = () => {
+        storage.formatting = value;
+    };
+
     return (
         <FormSection title="Auto Formatter">
             <FormText>
-                Enter the formatting numbers you want to use.
+                NOTE: These features automatically add Discord formatting to your messages.
             </FormText>
 
             <FormText>
@@ -22,11 +31,14 @@ export default function Settings() {
 
             <FormInput
                 title="Formatting"
-                value={storage.formatting ?? ""}
+                value={value}
                 placeholder="Example: 1,3,4"
-                onChange={(value: string) => {
-                    storage.formatting = value;
-                }}
+                onChange={setValue}
+            />
+
+            <FormRow
+                label="Apply"
+                onPress={apply}
             />
         </FormSection>
     );
