@@ -2,16 +2,12 @@ import { React } from "@vendetta/metro/common";
 import { storage } from "@vendetta/plugin";
 import { Forms } from "@vendetta/ui/components";
 
-const { FormSection, FormInput, FormRow, FormText } = Forms;
+const { FormSection, FormInput, FormButton, FormText } = Forms;
 
 export default function Settings() {
     const [value, setValue] = React.useState(
         storage.formatting ?? ""
     );
-
-    const apply = () => {
-        storage.formatting = value;
-    };
 
     return (
         <FormSection title="Auto Formatter">
@@ -36,9 +32,11 @@ export default function Settings() {
                 onChange={setValue}
             />
 
-            <FormRow
-                label="Apply"
-                onPress={apply}
+            <FormButton
+                text="Apply"
+                onPress={() => {
+                    storage.formatting = value;
+                }}
             />
         </FormSection>
     );
