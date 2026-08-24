@@ -1,6 +1,6 @@
 {
     "name": "Auto Formatter",
-    "description": "Automatically applies your selected Discord formatting to every sent message.",
+    "description": "Automatically applies selected Discord formatting to sent messages.",
     "authors": [
         {
             "name": "luca.gng",
