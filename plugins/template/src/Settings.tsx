@@ -1,61 +1,73 @@
+import { React } from "@vendetta/metro/common";
+import { storage } from "@vendetta/plugin";
 import { Forms } from "@vendetta/ui/components";
-import { React } from "@metro/common";
-import { settings } from "./Settings";
 
-const { FormSection, FormRow, FormSwitch, FormText } = Forms;
+const { FormSection, FormSwitchRow, FormDivider } = Forms;
 
-const toggle = (key: keyof typeof settings) => {
-    settings[key] = !settings[key];
-};
+export default function Settings() {
+    const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
 
-export default () => (
-    <React.Fragment>
+    const toggle = (key: string, value: boolean) => {
+        storage[key] = value;
+        forceUpdate();
+    };
+
+    return (
         <FormSection title="Auto Formatter">
-            <FormText>
-                NOTE: These features automatically add Discord formatting to your messages.
-            </FormText>
-
-            <FormRow
+            <FormSwitchRow
                 label="Auto Bold"
                 subLabel="Makes every sent message bold."
-                trailing={<FormSwitch value={settings.bold} onValueChange={() => toggle("bold")} />}
+                value={!!storage.autoBold}
+                onValueChange={(value: boolean) => toggle("autoBold", value)}
             />
+            <FormDivider />
 
-            <FormRow
+            <FormSwitchRow
                 label="Auto Italic"
                 subLabel="Makes every sent message italic."
-                trailing={<FormSwitch value={settings.italic} onValueChange={() => toggle("italic")} />}
+                value={!!storage.autoItalic}
+                onValueChange={(value: boolean) => toggle("autoItalic", value)}
             />
+            <FormDivider />
 
-            <FormRow
+            <FormSwitchRow
                 label="Auto Spoiler"
                 subLabel="Hides every sent message behind a spoiler."
-                trailing={<FormSwitch value={settings.spoiler} onValueChange={() => toggle("spoiler")} />}
+                value={!!storage.autoSpoiler}
+                onValueChange={(value: boolean) => toggle("autoSpoiler", value)}
             />
+            <FormDivider />
 
-            <FormRow
+            <FormSwitchRow
                 label="Auto Code"
                 subLabel="Formats every sent message as inline code."
-                trailing={<FormSwitch value={settings.code} onValueChange={() => toggle("code")} />}
+                value={!!storage.autoCode}
+                onValueChange={(value: boolean) => toggle("autoCode", value)}
             />
+            <FormDivider />
 
-            <FormRow
+            <FormSwitchRow
                 label="Auto Underline"
                 subLabel="Underlines every sent message."
-                trailing={<FormSwitch value={settings.underline} onValueChange={() => toggle("underline")} />}
+                value={!!storage.autoUnderline}
+                onValueChange={(value: boolean) => toggle("autoUnderline", value)}
             />
+            <FormDivider />
 
-            <FormRow
+            <FormSwitchRow
                 label="Auto Strikethrough"
                 subLabel="Adds strikethrough to every sent message."
-                trailing={<FormSwitch value={settings.strikethrough} onValueChange={() => toggle("strikethrough")} />}
+                value={!!storage.autoStrikethrough}
+                onValueChange={(value: boolean) => toggle("autoStrikethrough", value)}
             />
+            <FormDivider />
 
-            <FormRow
+            <FormSwitchRow
                 label="Auto Quote"
                 subLabel="Turns every sent message into a Discord quote."
-                trailing={<FormSwitch value={settings.quote} onValueChange={() => toggle("quote")} />}
+                value={!!storage.autoQuote}
+                onValueChange={(value: boolean) => toggle("autoQuote", value)}
             />
         </FormSection>
-    </React.Fragment>
-);
+    );
+}
