@@ -6,7 +6,7 @@ import Settings from "./Settings";
 
 let unpatch: (() => void) | null = null;
 
-function formatMessage(content: string) {
+function formatMessage(content: string): string {
     let result = content;
 
     if (storage.autoBold) result = `**${result}**`;
@@ -28,8 +28,6 @@ function formatMessage(content: string) {
 
 export default {
     onLoad() {
-        logger.log("Auto Formatter loaded");
-
         try {
             const MessageActions = metro.findByProps("sendMessage");
 
@@ -43,37 +41,33 @@ export default {
                 MessageActions,
                 (args: any[]) => {
                     try {
-                        const message = args?.[1];
-
-                        if (
-                            message &&
-                            typeof message.content === "string"
-                        ) {
-                            message.content = formatMessage(
-                                message.content
-                            );
+                        for (const arg of args) {
+                            if (
+                                arg &&
+                                typeof arg === "object" &&
+                                typeof arg.content === "string"
+                            ) {
+                                arg.content = formatMessage(arg.content);
+                                return;
+                            }
                         }
-                    } catch (e) {
+                    } catch (error) {
                         logger.error(
-                            `Auto Formatter message hook: ${String(e)}`
+                            `Auto Formatter: ${String(error)}`
                         );
                     }
                 }
             );
-        } catch (e) {
+        } catch (error) {
             logger.error(
-                `Auto Formatter load: ${String(e)}`
+                `Auto Formatter: ${String(error)}`
             );
         }
     },
 
     onUnload() {
-        if (unpatch) {
-            unpatch();
-            unpatch = null;
-        }
-
-        logger.log("Auto Formatter unloaded");
+        unpatch?.();
+        unpatch = null;
     },
 
     settings: Settings,
