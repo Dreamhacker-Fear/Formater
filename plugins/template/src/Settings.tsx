@@ -1,7 +1,7 @@
 import { Forms } from "@vendetta/ui/components";
 import { storage } from "@vendetta/plugin";
 
-const { FormSection, FormRow, FormText } = Forms;
+const { FormSection, FormSwitchRow, FormText } = Forms;
 
 export default function Settings() {
     return (
@@ -10,59 +10,66 @@ export default function Settings() {
                 NOTE: These features automatically add Discord formatting to your messages.
             </FormText>
 
-            <FormRow
+            <FormSwitchRow
                 label="Auto Bold"
                 subLabel="Makes every sent message bold."
-                onPress={() => {
-                    storage.autoBold = !storage.autoBold;
+                value={storage.autoBold ?? false}
+                onValueChange={(value: boolean) => {
+                    storage.autoBold = value;
                 }}
             />
 
-            <FormRow
+            <FormSwitchRow
                 label="Auto Italic"
                 subLabel="Makes every sent message italic."
-                onPress={() => {
-                    storage.autoItalic = !storage.autoItalic;
+                value={storage.autoItalic ?? false}
+                onValueChange={(value: boolean) => {
+                    storage.autoItalic = value;
                 }}
             />
 
-            <FormRow
+            <FormSwitchRow
                 label="Auto Spoiler"
                 subLabel="Hides every sent message behind a spoiler."
-                onPress={() => {
-                    storage.autoSpoiler = !storage.autoSpoiler;
+                value={storage.autoSpoiler ?? false}
+                onValueChange={(value: boolean) => {
+                    storage.autoSpoiler = value;
                 }}
             />
 
-            <FormRow
+            <FormSwitchRow
                 label="Auto Code"
                 subLabel="Formats every sent message as inline code."
-                onPress={() => {
-                    storage.autoCode = !storage.autoCode;
+                value={storage.autoCode ?? false}
+                onValueChange={(value: boolean) => {
+                    storage.autoCode = value;
                 }}
             />
 
-            <FormRow
+            <FormSwitchRow
                 label="Auto Underline"
                 subLabel="Underlines every sent message."
-                onPress={() => {
-                    storage.autoUnderline = !storage.autoUnderline;
+                value={storage.autoUnderline ?? false}
+                onValueChange={(value: boolean) => {
+                    storage.autoUnderline = value;
                 }}
             />
 
-            <FormRow
+            <FormSwitchRow
                 label="Auto Strikethrough"
                 subLabel="Adds strikethrough to every sent message."
-                onPress={() => {
-                    storage.autoStrikethrough = !storage.autoStrikethrough;
+                value={storage.autoStrikethrough ?? false}
+                onValueChange={(value: boolean) => {
+                    storage.autoStrikethrough = value;
                 }}
             />
 
-            <FormRow
+            <FormSwitchRow
                 label="Auto Quote"
                 subLabel="Turns every sent message into a Discord quote."
-                onPress={() => {
-                    storage.autoQuote = !storage.autoQuote;
+                value={storage.autoQuote ?? false}
+                onValueChange={(value: boolean) => {
+                    storage.autoQuote = value;
                 }}
             />
         </FormSection>
