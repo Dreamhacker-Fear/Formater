@@ -1,44 +1,80 @@
-import { metro } from "@vendetta/metro/common";
+import { metro } from "@vendetta";
 import { storage } from "@vendetta/plugin";
 import { before } from "@vendetta/patcher";
 import Settings from "./Settings";
 
-let unpatch: (() => void) | undefined;
+let unpatch: (() => void) | null = null;
 
-function formatMessage(content: string) {
-    if (!content) return content;
-
+function formatMessage(content: string): string {
     let result = content;
 
-    if (storage.autoBold) result = `**${result}**`;
-    if (storage.autoItalic) result = `*${result}*`;
-    if (storage.autoSpoiler) result = `||${result}||`;
-    if (storage.autoCode) result = `\`${result}\``;
-    if (storage.autoUnderline) result = `__${result}__`;
-    if (storage.autoStrikethrough) result = `~~${result}~~`;
-    if (storage.autoQuote) result = result.split("\n").map((line: string) => `> ${line}`).join("\n");
+    if (storage.autoBold) {
+        result = `**${result}**`;
+    }
+
+    if (storage.autoItalic) {
+        result = `*${result}*`;
+    }
+
+    if (storage.autoSpoiler) {
+        result = `||${result}||`;
+    }
+
+    if (storage.autoCode) {
+        result = `\`${result}\``;
+    }
+
+    if (storage.autoUnderline) {
+        result = `__${result}__`;
+    }
+
+    if (storage.autoStrikethrough) {
+        result = `~~${result}~~`;
+    }
+
+    if (storage.autoQuote) {
+        result = result
+            .split("\n")
+            .map((line: string) => `> ${line}`)
+            .join("\n");
+    }
 
     return result;
 }
 
 export default {
     onLoad() {
-        const MessageActions = metro.findByProps("sendMessage", "editMessage");
+        const MessageActions = metro.findByProps(
+            "sendMessage"
+        );
 
         if (!MessageActions) return;
 
-        unpatch = before("sendMessage", MessageActions, (args: any[]) => {
-            const message = args[1];
+        unpatch = before(
+            MessageActions,
+            "sendMessage",
+            (args: any[]) => {
+                const message = args?.[1];
 
-            if (!message || typeof message.content !== "string") return;
+                if (
+                    !message ||
+                    typeof message.content !== "string"
+                ) {
+                    return;
+                }
 
-            message.content = formatMessage(message.content);
-        });
+                message.content = formatMessage(
+                    message.content
+                );
+            }
+        );
     },
 
     onUnload() {
-        unpatch?.();
-        unpatch = undefined;
+        if (unpatch) {
+            unpatch();
+            unpatch = null;
+        }
     },
 
     settings: Settings,
