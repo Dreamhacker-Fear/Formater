@@ -1,25 +1,22 @@
-import { React } from "@vendetta/metro/common";
+import { ReactNative } from "@vendetta/metro/common";
 import { storage } from "@vendetta/plugin";
 import { Forms } from "@vendetta/ui/components";
 
 const { FormSection, FormSwitchRow } = Forms;
+const { ScrollView } = ReactNative;
 
 export default function Settings() {
-    const [, refresh] = React.useReducer((x) => x + 1, 0);
+    const [, refresh] = ReactNative.useState(0);
 
     const toggle = (key: string) => {
         storage[key] = !storage[key];
-        refresh();
+        refresh((value: number) => value + 1);
     };
 
     return (
-        <React.ScrollView
-            style={{
-                flex: 1,
-            }}
-            contentContainerStyle={{
-                paddingBottom: 40,
-            }}
+        <ScrollView
+            style={{ flex: 1 }}
+            contentContainerStyle={{ paddingBottom: 40 }}
         >
             <FormSection title="Auto Formatter">
                 <FormSwitchRow
@@ -71,6 +68,6 @@ export default function Settings() {
                     onValueChange={() => toggle("autoQuote")}
                 />
             </FormSection>
-        </React.ScrollView>
+        </ScrollView>
     );
 }
