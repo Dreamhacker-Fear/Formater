@@ -13,55 +13,64 @@ export default function Settings() {
     };
 
     return (
-        <FormSection title="Auto Formatter">
-            <FormSwitchRow
-                label="Auto Bold"
-                subLabel="Makes every sent message bold."
-                value={storage.autoBold ?? false}
-                onValueChange={() => toggle("autoBold")}
-            />
+        <React.ScrollView
+            style={{
+                flex: 1,
+            }}
+            contentContainerStyle={{
+                paddingBottom: 40,
+            }}
+        >
+            <FormSection title="Auto Formatter">
+                <FormSwitchRow
+                    label="Auto Bold"
+                    subLabel="Makes every sent message bold."
+                    value={storage.autoBold ?? false}
+                    onValueChange={() => toggle("autoBold")}
+                />
 
-            <FormSwitchRow
-                label="Auto Italic"
-                subLabel="Makes every sent message italic."
-                value={storage.autoItalic ?? false}
-                onValueChange={() => toggle("autoItalic")}
-            />
+                <FormSwitchRow
+                    label="Auto Italic"
+                    subLabel="Makes every sent message italic."
+                    value={storage.autoItalic ?? false}
+                    onValueChange={() => toggle("autoItalic")}
+                />
 
-            <FormSwitchRow
-                label="Auto Spoiler"
-                subLabel="Hides every sent message behind a spoiler."
-                value={storage.autoSpoiler ?? false}
-                onValueChange={() => toggle("autoSpoiler")}
-            />
+                <FormSwitchRow
+                    label="Auto Spoiler"
+                    subLabel="Hides every sent message behind a spoiler."
+                    value={storage.autoSpoiler ?? false}
+                    onValueChange={() => toggle("autoSpoiler")}
+                />
 
-            <FormSwitchRow
-                label="Auto Code"
-                subLabel="Formats every sent message as inline code."
-                value={storage.autoCode ?? false}
-                onValueChange={() => toggle("autoCode")}
-            />
+                <FormSwitchRow
+                    label="Auto Code"
+                    subLabel="Formats every sent message as inline code."
+                    value={storage.autoCode ?? false}
+                    onValueChange={() => toggle("autoCode")}
+                />
 
-            <FormSwitchRow
-                label="Auto Underline"
-                subLabel="Underlines every sent message."
-                value={storage.autoUnderline ?? false}
-                onValueChange={() => toggle("autoUnderline")}
-            />
+                <FormSwitchRow
+                    label="Auto Underline"
+                    subLabel="Underlines every sent message."
+                    value={storage.autoUnderline ?? false}
+                    onValueChange={() => toggle("autoUnderline")}
+                />
 
-            <FormSwitchRow
-                label="Auto Strikethrough"
-                subLabel="Adds strikethrough to every sent message."
-                value={storage.autoStrikethrough ?? false}
-                onValueChange={() => toggle("autoStrikethrough")}
-            />
+                <FormSwitchRow
+                    label="Auto Strikethrough"
+                    subLabel="Adds strikethrough to every sent message."
+                    value={storage.autoStrikethrough ?? false}
+                    onValueChange={() => toggle("autoStrikethrough")}
+                />
 
-            <FormSwitchRow
-                label="Auto Quote"
-                subLabel="Turns every sent message into a Discord quote."
-                value={storage.autoQuote ?? false}
-                onValueChange={() => toggle("autoQuote")}
-            />
-        </FormSection>
+                <FormSwitchRow
+                    label="Auto Quote"
+                    subLabel="Turns every sent message into a Discord quote."
+                    value={storage.autoQuote ?? false}
+                    onValueChange={() => toggle("autoQuote")}
+                />
+            </FormSection>
+        </React.ScrollView>
     );
 }
