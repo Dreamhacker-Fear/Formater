@@ -1,52 +1,36 @@
+import { metro } from "@vendetta/metro/common";
+import { storage } from "@vendetta/plugin";
 import { before } from "@vendetta/patcher";
-import { findByProps } from "@vendetta/metro";
-import Settings, { settings } from "./Settings";
-
-const MessageActions = findByProps("sendMessage", "editMessage");
+import Settings from "./Settings";
 
 let unpatch: (() => void) | undefined;
 
 function formatMessage(content: string) {
-    if (!content || typeof content !== "string") return content;
+    if (!content) return content;
 
     let result = content;
 
-    if (settings.bold)
-        result = `**${result}**`;
-
-    if (settings.italic)
-        result = `*${result}*`;
-
-    if (settings.underline)
-        result = `__${result}__`;
-
-    if (settings.strikethrough)
-        result = `~~${result}~~`;
-
-    if (settings.spoiler)
-        result = `||${result}||`;
-
-    if (settings.code)
-        result = `\`${result}\``;
-
-    if (settings.quote)
-        result = result
-            .split("\n")
-            .map(line => `> ${line}`)
-            .join("\n");
+    if (storage.autoBold) result = `**${result}**`;
+    if (storage.autoItalic) result = `*${result}*`;
+    if (storage.autoSpoiler) result = `||${result}||`;
+    if (storage.autoCode) result = `\`${result}\``;
+    if (storage.autoUnderline) result = `__${result}__`;
+    if (storage.autoStrikethrough) result = `~~${result}~~`;
+    if (storage.autoQuote) result = result.split("\n").map((line: string) => `> ${line}`).join("\n");
 
     return result;
 }
 
 export default {
     onLoad() {
-        if (!MessageActions?.sendMessage) return;
+        const MessageActions = metro.findByProps("sendMessage", "editMessage");
 
-        unpatch = before("sendMessage", MessageActions, args => {
-            const message = args?.[1];
+        if (!MessageActions) return;
 
-            if (!message || typeof message.content !== "string")
-                return;
+        unpatch = before("sendMessage", MessageActions, (args: any[]) => {
+            const message = args[1];
+
+            if (!message || typeof message.content !== "string") return;
 
             message.content = formatMessage(message.content);
         });
@@ -57,5 +41,5 @@ export default {
         unpatch = undefined;
     },
 
-    settings: Settings
+    settings: Settings,
 };
