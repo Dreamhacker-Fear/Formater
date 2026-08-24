@@ -2,28 +2,32 @@ name: Build and deploy
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     permissions:
       contents: write
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Prepare environment
-        uses: actions/setup-node@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: "22"
 
-      - run: npm install --global pnpm
+      - name: Install pnpm
+        run: npm install --global pnpm@10.33.0
 
-      - name: Install deps
+      - name: Install dependencies
         run: pnpm install
 
-      - name: Build plugin(s)
+      - name: Build plugins
         run: node ./build.mjs
 
       - name: Copy additional files
@@ -34,7 +38,7 @@ jobs:
           cat README.md >> dist/404.md
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
